@@ -27,6 +27,7 @@ This is a Node.js backend API for managing tasks and users. The application is b
 - bcrypt for password hashing
 - Jest for testing
 - Supertest for API testing
+- Express-validator for request validations
 
 ## Setup Instructions
 
