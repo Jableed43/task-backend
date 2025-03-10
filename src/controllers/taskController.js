@@ -4,8 +4,22 @@ import { findTaskById } from "../utils/taskUtils.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
-    return res.status(200).json(tasks);
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10; 
+    const skip = (page - 1) * limit; 
+
+    const tasks = await Task.find()
+      .skip(skip)
+      .limit(limit);
+
+    const totalTasks = await Task.countDocuments();
+
+    return res.status(200).json({
+      totalTasks,
+      totalPages: Math.ceil(totalTasks / limit),
+      currentPage: page,
+      tasks,
+    });
   } catch (error) {
     return handleErrorResponse(res, error);
   }

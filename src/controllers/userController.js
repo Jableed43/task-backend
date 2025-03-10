@@ -38,8 +38,23 @@ export const createUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    return res.status(users.length ? 200 : 204).json(users.length ? users : { message: "There are no users" });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find().skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments();
+
+    return res.status(users.length ? 200 : 204).json(
+      users.length
+        ? {
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / limit),
+            currentPage: page,
+            users,
+          }
+        : { message: "There are no users" }
+    );
   } catch (error) {
     return handleErrorResponse(res, error);
   }
