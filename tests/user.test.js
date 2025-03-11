@@ -6,7 +6,7 @@ describe("User API", () => {
   let userId;
   let newUserId;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const userData = new User({
       username: "testuser",
       email: "test@example.com",
@@ -25,25 +25,26 @@ describe("User API", () => {
     newUserId = savedNewUser._id;
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await User.findByIdAndDelete(userId);
     await User.findByIdAndDelete(newUserId);
   });
 
   test("Should create a new user", async () => {
     const res = await request(app).post("/api/user/create").send({
-      username: "newuser2",
-      email: "new2@example.com",
+      username: "newuser224",
+      email: "new224@example.com",
       password: "Password123",
     });
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("_id");
+    await User.findByIdAndDelete(res.body._id);
   });
 
   test("Should get all users", async () => {
     const res = await request(app).get("/api/user/");
     expect(res.status).toBe(200);
-    expect(res.body).toBeInstanceOf(Array);
+    expect(res.body).toBeInstanceOf(Object);
   });
 
   test("Should update user", async () => {

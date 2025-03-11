@@ -9,24 +9,30 @@ let user;
 let taskId;
 
 beforeAll(async () => {
-  user = await User.create({
-    username: "testuser3",
-    email: "test@example.com",
-    password: "Password123",
-  });
-  
+
+  await User.deleteOne({ email: "test@example.com" });
+  await Task.deleteMany({ user: user?._id });
+
+      const userData = new User({
+        username: "testuser3",
+        email: "test@example.com",
+        password: "Password123",
+      });
+
+      user = await userData.save();
   token = generateToken(user._id);
   
   const task = await Task.create({
     title: "Test Task",
-    user: user._id,
+    description: "Some description",
+    userId: user._id,
   });
   taskId = task._id;
 });
 
 afterAll(async () => {
-  await User.deleteMany({});
-  await Task.deleteMany({});
+  await Task.deleteOne({ _id: taskId }); 
+  await User.deleteOne({ _id: user._id }); 
 });
 
 describe("Task API", () => {
@@ -35,7 +41,6 @@ describe("Task API", () => {
       .post("/api/task/create")
       .set("Authorization", `Bearer ${token}`)
       .send({ title: "New Task", userId: user._id });
-    
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("_id");
     taskId = res.body._id;
@@ -47,8 +52,8 @@ describe("Task API", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeGreaterThan(0);
+    expect(Array.isArray(res.body.tasks)).toBe(true);
+    expect(res.body.tasks.length).toBeGreaterThan(0);
   });
 
   test("Should update task", async () => {

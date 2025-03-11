@@ -3,8 +3,11 @@ import { connectDB } from "./db.js";
 import userRouter from "./routes/userRoute.js";
 import taskRouter from "./routes/taskRoute.js";
 import cors from "cors";
+import { PORT as SERVERPORT } from "./config.js";
+
 
 const app = express();
+const PORT = process.env.NODE_ENV === "test" ? 0 : SERVERPORT;
 
 app.use(cors({
   origin: '*',
@@ -21,7 +24,7 @@ app.use("/api/task", taskRouter);
 await connectDB();
 
 const startServer = async () => {
-  const server = app.listen(0, () => {
+  const server = app.listen(PORT, () => {
   });
   console.log(`Server is running on port ${server.address().port}`);
 
