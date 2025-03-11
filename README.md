@@ -6,14 +6,14 @@ This is a Node.js backend API for managing tasks and users. The application is b
 
 - **User Management**:
   - Create a user
-  - Get all users
+  - Get all users with pagination
   - Update user
   - Delete user
   - Validate user with JWT
 
 - **Task Management**:
   - Create a task
-  - Get all tasks
+  - Get all tasks with pagination
   - Update task
   - Delete task
 
