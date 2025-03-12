@@ -1,9 +1,9 @@
 import express from "express";
-import { connectDB } from "./db.js";
-import userRouter from "./routes/userRoute.js";
-import taskRouter from "./routes/taskRoute.js";
+import { connectDB } from "../src/db.js";
+import userRouter from "../src/routes/userRoute.js";
+import taskRouter from "../src/routes/taskRoute.js";
 import cors from "cors";
-import { PORT as SERVERPORT } from "./config.js";
+import { PORT as SERVERPORT } from "../src/config.js";
 
 
 const app = express();

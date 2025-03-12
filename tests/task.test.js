@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../src/index.js";
+import { app } from "../api/index.js";
 import User from "../src/models/userModel.js";
 import Task from "../src/models/taskModel.js";
 import { generateToken } from "../src/middlewares/verifyTokenMiddleware.js";
