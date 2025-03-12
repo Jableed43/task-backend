@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { startServer } from "../src/index.js";
+import { startServer } from "../api/index.js";
 
 let mongoServer;
 let server;
