@@ -20,6 +20,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", userRouter);
 app.use("/api/task", taskRouter);
 
+app.get("/api/test", (req, res) => {
+  res.status(200).send("working ok");
+});
+
 
 await connectDB();
 
