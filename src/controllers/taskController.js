@@ -1,18 +1,25 @@
+import mongoose from "mongoose";
 import Task from "../models/taskModel.js";
 import { handleErrorResponse } from "../utils/errorUtils.js";
 import { findTaskById } from "../utils/taskUtils.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; 
-    const limit = parseInt(req.query.limit) || 10; 
-    const skip = (page - 1) * limit; 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status;
+    const skip = (page - 1) * limit;
 
-    const tasks = await Task.find()
-      .skip(skip)
-      .limit(limit);
+    const filter = {};
+    if (req.query.userId) {
+      filter.userId = mongoose.Types.ObjectId.createFromHexString(req.query.userId);
+    }
+    if (status && status !== "All") {
+      filter.status = status;
+    }
 
-    const totalTasks = await Task.countDocuments();
+    const tasks = await Task.find(filter).skip(skip).limit(limit);
+    const totalTasks = await Task.countDocuments(filter);
 
     return res.status(200).json({
       totalTasks,
@@ -24,6 +31,8 @@ export const getTasks = async (req, res) => {
     return handleErrorResponse(res, error);
   }
 };
+
+
 
 export const createTask = async (req, res) => {
   try {

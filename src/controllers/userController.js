@@ -113,7 +113,7 @@ export const validate = async (req, res) => {
       return res.status(200).json({
         message: "Logged in successfully",
         token,
-        user: { id: user._id, email: user.email },
+        user: { id: user._id, email: user.email, userName: user.username },
       });
     } else {
       return res.status(400).json({ message: "Invalid user or password" });
