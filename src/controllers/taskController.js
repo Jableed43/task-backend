@@ -5,8 +5,8 @@ import { findTaskById } from "../utils/taskUtils.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
     const status = req.query.status;
     const skip = (page - 1) * limit;
 
@@ -18,8 +18,9 @@ export const getTasks = async (req, res) => {
       filter.status = status;
     }
 
-    const tasks = await Task.find(filter).skip(skip).limit(limit);
     const totalTasks = await Task.countDocuments(filter);
+
+    const tasks = await Task.find(filter).skip(skip).limit(limit);
 
     return res.status(200).json({
       totalTasks,
@@ -31,8 +32,6 @@ export const getTasks = async (req, res) => {
     return handleErrorResponse(res, error);
   }
 };
-
-
 
 export const createTask = async (req, res) => {
   try {

@@ -108,7 +108,7 @@ export const validate = async (req, res) => {
       const token = jwt.sign(
         { userId: user._id, userEmail: user.email },
         JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "2h" }
       );
       return res.status(200).json({
         message: "Logged in successfully",
