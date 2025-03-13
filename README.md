@@ -62,6 +62,8 @@ Create a `.env` file in the root directory of the project and add the following 
 ```bash
 MONGODB_URI="mongodb://127.0.0.1:27017/tasks-manager"
 JWT_SECRET="SECRET"
+PORT=3002
+NODE_ENV=development
 ```
 
 - **MONGODB_URI**: URL for your local MongoDB instance
@@ -83,13 +85,19 @@ npm start
 
 ### 5. Running Tests
 
-To run the tests using Jest and Supertest, run:
+Tests should be run in the `development` branch. Switch to the branch with:
 
 ```bash
-npm test
+git checkout development
 ```
 
-This will run all the tests defined in your test files.
+Then, run the tests using Jest and Supertest:
+
+```bash
+npm run test
+```
+
+Since the `master` branch is used for deployment, it may have differences that could affect test execution.
 
 ---
 
@@ -122,10 +130,16 @@ The application uses Jest for unit tests and Supertest for API testing.
 
 ### Running Tests
 
-To run the tests, simply use the following command:
+To run the tests, switch to the `development` branch:
 
 ```bash
-npm test
+git checkout development
+```
+
+Then, use the following command:
+
+```bash
+npm run test
 ```
 
 This will run the test suite, and you should see output for each test, indicating whether it passed or failed.
