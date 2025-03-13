@@ -17,10 +17,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", userRouter);
 app.use("/api/task", taskRouter);
 
-app.get("/api/test", (req, res) => {
-  res.status(200).send("working ok");
-});
 
 await connectDB();
 
-export default app;
+const startServer = async () => {
+  const server = app.listen(0, () => {
+  });
+  console.log(`Server is running on port ${server.address().port}`);
+
+  process.on("SIGINT", () => {
+    server.close(() => {
+      process.exit(0);
+    });
+  });
+
+  return server;
+};
+
+startServer();
+
+export { app, startServer };
